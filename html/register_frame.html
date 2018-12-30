@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>注册Frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    .row {
+        box-sizing: border-box;
+        width: auto;
+        height: 70px;
+        margin-left: 32px;
+        margin-right: 32px;
+        padding-top: 40px;
+        border-bottom: 1px solid #888;
+    }
+
+    .input {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+
+    .btn {
+        width: auto;
+        height: 50px;
+        margin-left: 32px;
+        margin-right: 32px;
+        margin-top: 32px;
+        background-color: #ffaf45;
+        color: #fff;
+        font-size: 24px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .highlight {
+        opacity: 0.7;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <input id="username" class="input" type="text" placeholder="用户名">
+    </div>
+    <div class="row">
+        <input id="password" class="input" type="password" placeholder="密码">
+    </div>
+    <div class="btn" tapmode="highlight" onclick="fnRegister();">注册</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/SHA1.js"></script>
+<script type="text/javascript">
+apiready = function() {
+
+};
+
+  // 注册
+  function fnRegister() {
+      var username = $api.byId("username");
+      var password = $api.byId("password");
+      var vusername = $api.val(username);
+      var vpassword = $api.val(password);
+      var now = Date.now();
+      //A6091638150502修改为自己项目ID  416502F6-E4FE-0286-C7BF-D272599F870F修改为自己项目appKey
+      var appKey = SHA1("A6091638150502"+"UZ"+"416502F6-E4FE-0286-C7BF-D272599F870F"+"UZ"+now)+"."+now
+
+      api.ajax({
+          url: 'https://d.apicloud.com/mcm/api/user',
+          method: 'post',
+          headers: {
+              //A6091638150502修改为自己项目ID
+              "X-APICloud-AppId": "A6091638150502",
+              "X-APICloud-AppKey":appKey,
+          },
+          data: {
+              values: {
+                  username:vusername,
+                  password:vpassword
+              }
+          }},
+          function (ret,err){
+            if(ret&&ret.id){
+              alert("注册成功！");
+            }else{
+              alert("注册失败！");
+            }
+          }
+      );
+    }
+
+</script>
+
+</html>
